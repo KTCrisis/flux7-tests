@@ -1,0 +1,44 @@
+//go:build integration
+
+package flux7tests
+
+import (
+	"os"
+	"os/exec"
+	"testing"
+)
+
+var (
+	meshBin string
+	mem7Bin string
+)
+
+func TestMain(m *testing.M) {
+	meshBin = findBinary("agent-mesh")
+	mem7Bin = findBinary("mem7")
+
+	if meshBin == "" {
+		panic("agent-mesh binary not found in PATH or ~/go/bin/")
+	}
+
+	os.Exit(m.Run())
+}
+
+func findBinary(name string) string {
+	if p, err := exec.LookPath(name); err == nil {
+		return p
+	}
+	home, _ := os.UserHomeDir()
+	candidate := home + "/go/bin/" + name
+	if _, err := os.Stat(candidate); err == nil {
+		return candidate
+	}
+	return ""
+}
+
+func skipIfNoMem7(t *testing.T) {
+	t.Helper()
+	if mem7Bin == "" {
+		t.Skip("mem7 binary not found, skipping mem7 tests")
+	}
+}
