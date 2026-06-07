@@ -1,5 +1,7 @@
 # flux7-tests
 
+[![Integration](https://img.shields.io/github/actions/workflow/status/KTCrisis/flux7-tests/integration.yaml?style=flat-square&label=integration)](https://github.com/KTCrisis/flux7-tests/actions/workflows/integration.yaml)
+
 Integration test suite for the flux7 stack: [flux7-mesh](https://github.com/KTCrisis/flux7-mesh) and [flux7-memory](https://github.com/KTCrisis/flux7-memory).
 
 ## Prerequisites
