@@ -7,12 +7,16 @@ import (
 )
 
 type MeshConfig struct {
-	Port        int
-	StoragePath string
-	TraceFile   string
-	MemoryURL   string
-	MCPServers  []MCPServerDef
-	Policies    []PolicyDef
+	Port                int
+	StoragePath         string
+	TraceFile           string
+	MemoryURL           string
+	MemoryToken         string
+	ApprovalTimeoutSecs int    // approval.timeout_seconds (0 = mesh default)
+	ApprovalChannel     string // approval.channel: queue | tty | tty-fallback ("" = mesh default)
+	MCPServers          []MCPServerDef
+	OpenAPIs            []OpenAPIDef
+	Policies            []PolicyDef
 }
 
 type MCPServerDef struct {
@@ -20,6 +24,11 @@ type MCPServerDef struct {
 	Transport string
 	Command   string
 	Args      []string
+}
+
+type OpenAPIDef struct {
+	File       string
+	BackendURL string
 }
 
 type PolicyDef struct {
@@ -50,6 +59,27 @@ func (c *MeshConfig) WriteYAML(dir string) (string, error) {
 	}
 	if c.MemoryURL != "" {
 		fmt.Fprintf(f, "memory:\n  url: %s\n", c.MemoryURL)
+		if c.MemoryToken != "" {
+			fmt.Fprintf(f, "  token: %s\n", c.MemoryToken)
+		}
+	}
+	if c.ApprovalTimeoutSecs > 0 || c.ApprovalChannel != "" {
+		fmt.Fprintln(f, "approval:")
+		if c.ApprovalTimeoutSecs > 0 {
+			fmt.Fprintf(f, "  timeout_seconds: %d\n", c.ApprovalTimeoutSecs)
+		}
+		if c.ApprovalChannel != "" {
+			fmt.Fprintf(f, "  channel: %s\n", c.ApprovalChannel)
+		}
+	}
+	if len(c.OpenAPIs) > 0 {
+		fmt.Fprintln(f, "openapi:")
+		for _, o := range c.OpenAPIs {
+			fmt.Fprintf(f, "  - file: %s\n", o.File)
+			if o.BackendURL != "" {
+				fmt.Fprintf(f, "    backend_url: %s\n", o.BackendURL)
+			}
+		}
 	}
 
 	if len(c.MCPServers) > 0 {

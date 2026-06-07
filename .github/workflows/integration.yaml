@@ -41,5 +41,18 @@ jobs:
         run: go install ./cmd/mem7/
         working-directory: .deps/flux7-memory
 
+      - name: Checkout flux7-supervisor
+        uses: actions/checkout@v4
+        with:
+          repository: KTCrisis/flux7-supervisor
+          path: .deps/flux7-supervisor
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install sup7
+        run: pip install .deps/flux7-supervisor
+
       - name: Run integration suite
         run: go test -tags=integration -v -timeout 2m

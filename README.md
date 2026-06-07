@@ -14,9 +14,12 @@ cd ~/flux7-mesh && go install ./cmd/mesh7/
 
 # mem7 (optional — tests skip gracefully)
 cd ~/flux7-memory && go install ./cmd/mem7/
+
+# sup7 (optional — tests skip gracefully)
+pip install ~/flux7-supervisor
 ```
 
-Ports 19090 (mesh) and 19070 (mem7) must be free.
+Ports 19090 (mesh), 19070 (mem7) and 19091 (backend stub) must be free.
 
 ## Run
 
@@ -40,6 +43,8 @@ go test -tags=integration -v -run TestAutoProxy
 | `TestStreamableHTTP` | POST /mcp | session lifecycle (init, tools/list, DELETE) |
 | `TestDurableGrants` | SQLite durable state | grant create, kill, restart, grant survives |
 | `TestMeshWithMem7Daemon` | mesh + mem7 | both healthy, integration wired |
+| `TestApprovalLoopL0L1` | mesh + sup7 (rules-only) | L0→L1: rule auto-approve, escalate → L2 deny via REST, params non-null canary |
+| `TestApprovalLoopMem7AutoApprove` | mesh + mem7 + sup7 | 3 sup7 approvals then 4th call auto-approved by supervisor:mem7 (sup7 killed) |
 
 Full matrix (4 axes):
 
