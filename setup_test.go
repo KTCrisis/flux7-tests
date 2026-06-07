@@ -14,11 +14,11 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	meshBin = findBinary("agent-mesh")
+	meshBin = findBinary("mesh7")
 	mem7Bin = findBinary("mem7")
 
 	if meshBin == "" {
-		panic("agent-mesh binary not found in PATH or ~/go/bin/")
+		panic("mesh7 binary not found in PATH or ~/go/bin/")
 	}
 
 	os.Exit(m.Run())

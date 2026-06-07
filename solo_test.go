@@ -9,7 +9,7 @@ import (
 	"github.com/KTCrisis/flux7-tests/harness"
 )
 
-// Config 1: Solo MCP — Claude spawns agent-mesh, no daemon, no mem7.
+// Config 1: Solo MCP — Claude spawns mesh7, no daemon, no mem7.
 func TestSoloMCP(t *testing.T) {
 	dir := t.TempDir()
 	cfg := &harness.MeshConfig{

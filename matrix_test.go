@@ -3,7 +3,7 @@
 // Run with: go test -tags=integration -v -timeout 5m
 //
 // Prerequisites:
-//   - agent-mesh binary in PATH or ~/go/bin/
+//   - mesh7 binary in PATH or ~/go/bin/
 //   - mem7 binary in PATH or ~/go/bin/
 //   - No other process on ports 19090 (mesh) and 19070 (mem7)
 //

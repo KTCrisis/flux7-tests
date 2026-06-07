@@ -1,17 +1,17 @@
 # flux7-tests
 
-Integration test suite for the flux7 stack: [agent-mesh](https://github.com/KTCrisis/agent-mesh), [mem7](https://github.com/KTCrisis/mem7), and agent7.
+Integration test suite for the flux7 stack: [flux7-mesh](https://github.com/KTCrisis/flux7-mesh) and [flux7-memory](https://github.com/KTCrisis/flux7-memory).
 
 ## Prerequisites
 
 Binaries in `PATH` or `~/go/bin/`:
 
 ```bash
-# agent-mesh
-cd ~/agent-mesh && go install ./cmd/agent-mesh/
+# mesh7
+cd ~/flux7-mesh && go install ./cmd/mesh7/
 
 # mem7 (optional — tests skip gracefully)
-cd ~/mem7 && go install ./cmd/mem7/
+cd ~/flux7-memory && go install ./cmd/mem7/
 ```
 
 Ports 19090 (mesh) and 19070 (mem7) must be free.
@@ -33,7 +33,7 @@ go test -tags=integration -v -run TestAutoProxy
 | Test | Config | What it validates |
 |---|---|---|
 | `TestSoloMCP` | Solo MCP stdio | init, tools/list, tool call, unknown tool error |
-| `TestServeDaemon` | `agent-mesh serve` | health, /tools, /version endpoints |
+| `TestServeDaemon` | `mesh7 serve` | health, /tools, /version endpoints |
 | `TestAutoProxy` | Daemon + MCP auto-proxy | init, tools/list, tool call through proxy |
 | `TestStreamableHTTP` | POST /mcp | session lifecycle (init, tools/list, DELETE) |
 | `TestDurableGrants` | SQLite durable state | grant create, kill, restart, grant survives |
