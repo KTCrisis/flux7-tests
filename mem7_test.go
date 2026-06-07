@@ -19,14 +19,15 @@ func TestMeshWithMem7Daemon(t *testing.T) {
 	mem7Dir := dir + "/mem7data"
 	os.MkdirAll(mem7Dir, 0o755)
 
-	// Start mem7 daemon
+	// Start mem7 daemon — MEM7_DIR must be set before the spawn so the
+	// daemon inherits it (cmd.Env is captured at StartProcess time).
+	os.Setenv("MEM7_DIR", mem7Dir)
+	defer os.Unsetenv("MEM7_DIR")
 	mem7Proc, err := harness.StartProcess("mem7", mem7Bin, "serve", "--listen", ":19070", "--token", "test-token")
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer mem7Proc.Stop()
-	os.Setenv("MEM7_DIR", mem7Dir)
-	defer os.Unsetenv("MEM7_DIR")
 
 	if err := harness.WaitHealthy("http://localhost:19070/healthz", 10e9); err != nil {
 		t.Fatal(err)
